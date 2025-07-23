@@ -1,0 +1,77 @@
+import tkinter as tk
+import random
+
+# Initialize main window
+root = tk.Tk()
+root.title("Rock Paper Scissors Game")
+root.geometry("800x600")  # Increased window size
+root.configure(bg="#f0f8ff")
+
+# Scores
+user_score = 0
+computer_score = 0
+
+# Choices
+choices = ["Rock", "Paper", "Scissors"]
+
+# Function to determine the winner
+def play(user_choice):
+    global user_score, computer_score
+    computer_choice = random.choice(choices)
+    
+    result_text.set(f"You chose: {user_choice}\nComputer chose: {computer_choice}")
+    
+    if user_choice == computer_choice:
+        outcome = "It's a tie!"
+    elif (user_choice == "Rock" and computer_choice == "Scissors") or \
+         (user_choice == "Paper" and computer_choice == "Rock") or \
+         (user_choice == "Scissors" and computer_choice == "Paper"):
+        user_score += 1
+        outcome = "You win!"
+    else:
+        computer_score += 1
+        outcome = "You lose!"
+    
+    result_text.set(f"You chose: {user_choice}\nComputer chose: {computer_choice}\n\n{outcome}")
+    score_text.set(f"Score - You: {user_score} | Computer: {computer_score}")
+
+# Function to reset the game
+def reset_game():
+    global user_score, computer_score
+    user_score = 0
+    computer_score = 0
+    result_text.set("Make your move!")
+    score_text.set("Score - You: 0 | Computer: 0")
+
+# Interface elements
+title = tk.Label(root, text="Rock Paper Scissors", font=("Helvetica", 20, "bold"), bg="#f0f8ff", fg="#333")
+title.pack(pady=20)
+
+result_text = tk.StringVar()
+result_text.set("Make your move!")
+result_label = tk.Label(root, textvariable=result_text, font=("Helvetica", 14), bg="#f0f8ff")
+result_label.pack(pady=20)
+
+score_text = tk.StringVar()
+score_text.set("Score - You: 0 | Computer: 0")
+score_label = tk.Label(root, textvariable=score_text, font=("Helvetica", 14, "bold"), bg="#f0f8ff")
+score_label.pack(pady=10)
+
+# Buttons for choices
+button_frame = tk.Frame(root, bg="#f0f8ff")
+button_frame.pack(pady=20)
+
+rock_button = tk.Button(button_frame, text="Rock", font=("Helvetica", 14), width=12, command=lambda: play("Rock"))
+paper_button = tk.Button(button_frame, text="Paper", font=("Helvetica", 14), width=12, command=lambda: play("Paper"))
+scissors_button = tk.Button(button_frame, text="Scissors", font=("Helvetica", 14), width=12, command=lambda: play("Scissors"))
+
+rock_button.grid(row=0, column=0, padx=20, pady=10)
+paper_button.grid(row=0, column=1, padx=20, pady=10)
+scissors_button.grid(row=0, column=2, padx=20, pady=10)
+
+# Reset button
+reset_btn = tk.Button(root, text="Play Again", font=("Helvetica", 12, "bold"), command=reset_game, bg="#d1e7dd", fg="#333")
+reset_btn.pack(pady=30)
+
+# Start the GUI loop
+root.mainloop()
